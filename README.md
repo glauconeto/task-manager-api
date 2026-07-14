@@ -65,7 +65,7 @@ src/main/java/io/github/glauconeto/taskmanager/
 | **Autenticação**   | Integração com JWT (login, validação de token)                           | ⏳ Em andamento |
 | **Validações**     | Validações com **Bean Validation** (`@Valid`, `@NotBlank`, etc.)         | ⏳ Em andamento |
 | **Códigos HTTP**   | Uso correto de status codes (**201, 204, 400, 404, 409**, etc.)          | ⏳ Em andamento |
-| **Tratamento de Erros** | Exceções globais com **`@ControllerAdvice`** e mensagens personalizadas | ❌ Pendente   |
-| **Swagger**        | Documentação interativa da API                                           | ❌ Pendente   |
-| **Testes**         | Testes unitários e de integração (JUnit, Mockito)                        | ❌ Pendente   |
-| **Deploy**         | Configuração para deploy (ex: Dockerfile, CI/CD)                         | ❌ Pendente   |
+| **Tratamento de Erros** | Exceções globais com **`@ControllerAdvice`** e mensagens personalizadas | Pendente   |
+| **Swagger**        | Documentação interativa da API                                           | Pendente   |
+| **Testes**         | Testes unitários e de integração (JUnit, Mockito)                        | Pendente   |
+| **Deploy**         | Configuração para deploy (ex: Dockerfile, CI/CD)                         | Pendente   |
