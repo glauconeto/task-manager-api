@@ -3,6 +3,8 @@ package io.github.glauconeto.taskmanager.service.impl;
 import io.github.glauconeto.taskmanager.dto.request.UserRequest;
 import io.github.glauconeto.taskmanager.dto.response.UserResponse;
 import io.github.glauconeto.taskmanager.entity.User;
+import io.github.glauconeto.taskmanager.exception.BusinessException;
+import io.github.glauconeto.taskmanager.exception.ResourceNotFoundException;
 import io.github.glauconeto.taskmanager.mapper.UserMapper;
 import io.github.glauconeto.taskmanager.repository.UserRepository;
 import io.github.glauconeto.taskmanager.service.UserService;
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse create(UserRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new BusinessException("Email already exists");
         }
         User user = userMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -35,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse findById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return userMapper.toResponse(user);
     }
 
@@ -49,11 +51,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse update(UUID id, UserRequest request) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (userRepository.existsByEmail(request.getEmail())
                 && !user.getEmail().equals(request.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new BusinessException("Email already exists");
         }
 
         user.setName(request.getName());
@@ -67,7 +69,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(UUID id) {
         if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("User not found");
+            throw new ResourceNotFoundException("User not found");
         }
         userRepository.deleteById(id);
     }

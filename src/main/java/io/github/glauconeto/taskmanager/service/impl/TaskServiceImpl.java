@@ -6,6 +6,7 @@ import io.github.glauconeto.taskmanager.entity.Task;
 import io.github.glauconeto.taskmanager.entity.TaskPriority;
 import io.github.glauconeto.taskmanager.entity.TaskStatus;
 import io.github.glauconeto.taskmanager.entity.User;
+import io.github.glauconeto.taskmanager.exception.ResourceNotFoundException;
 import io.github.glauconeto.taskmanager.mapper.TaskMapper;
 import io.github.glauconeto.taskmanager.repository.TaskRepository;
 import io.github.glauconeto.taskmanager.repository.UserRepository;
@@ -27,7 +28,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponse create(TaskRequest request) {
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Task task = taskMapper.toEntity(request);
         task.setUser(user);
@@ -39,7 +40,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponse findById(UUID id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         return taskMapper.toResponse(task);
     }
 
@@ -74,10 +75,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponse update(UUID id, TaskRequest request) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
@@ -93,7 +94,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void delete(UUID id) {
         if (!taskRepository.existsById(id)) {
-            throw new IllegalArgumentException("Task not found");
+            throw new ResourceNotFoundException("Task not found");
         }
         taskRepository.deleteById(id);
     }

@@ -54,17 +54,17 @@ src/main/java/io/github/glauconeto/taskmanager/
 ## 🗺 Roadmap
 | Fase               | Descrição                                                                 | Status      |
 |--------------------|---------------------------------------------------------------------------|-------------|
-| **Estrutura Base** | Configuração inicial (Gradle, Docker, Spring Boot)                      | ✅ Concluído |
-| **Entidades**      | Modelagem das entidades (ex: `Task`, `User`)                              | ✅ Concluído |
-| **DTOs**           | Criação de DTOs para requisições/respostas                               | ✅ Concluído |
-| **Persistência**   | Configuração e integração com **PostgreSQL** (Docker)                    | ✅ Concluído |
-| **Camada Repository** | Implementação dos repositórios **Spring Data JPA**                   | ✅ Concluído |
-| **Serviços**       | Lógica de negócio (CRUD, validações)                                      | ✅ Concluído |
-| **Controladores**  | Endpoints REST (ex: `/tasks`, `/auth`)                                   | ✅ Concluído |
-| **Conexão com Banco**   | Integração com banco de dados postgres                           | ⏳ Em andamento |
-| **Autenticação**   | Integração com JWT (login, validação de token)                           | ⏳ Em andamento |
-| **Validações**     | Validações com **Bean Validation** (`@Valid`, `@NotBlank`, etc.)         | ⏳ Em andamento |
-| **Códigos HTTP**   | Uso correto de status codes (**201, 204, 400, 404, 409**, etc.)          | ⏳ Em andamento |
+| **Estrutura Base** | Configuração inicial (Gradle, Docker, Spring Boot)                      | Concluído |
+| **Entidades**      | Modelagem das entidades (ex: `Task`, `User`)                              | Concluído |
+| **DTOs**           | Criação de DTOs para requisições/respostas                               | Concluído |
+| **Persistência**   | Configuração e integração com **PostgreSQL** (Docker)                    | Concluído |
+| **Camada Repository** | Implementação dos repositórios **Spring Data JPA**                   | Concluído |
+| **Serviços**       | Lógica de negócio (CRUD, validações)                                      | Concluído |
+| **Controladores**  | Endpoints REST (ex: `/tasks`, `/auth`)                                   | Concluído |
+| **Conexão com Banco**   | Integração com banco de dados postgres                           | Em andamento |
+| **Autenticação**   | Integração com JWT (login, validação de token)                           | Em andamento |
+| **Validações**     | Validações com **Bean Validation** (`@Valid`, `@NotBlank`, etc.)         | Em andamento |
+| **Códigos HTTP**   | Uso correto de status codes (**201, 204, 400, 404, 409**, etc.)          | Em andamento |
 | **Tratamento de Erros** | Exceções globais com **`@ControllerAdvice`** e mensagens personalizadas | Pendente   |
 | **Swagger**        | Documentação interativa da API                                           | Pendente   |
 | **Testes**         | Testes unitários e de integração (JUnit, Mockito)                        | Pendente   |
