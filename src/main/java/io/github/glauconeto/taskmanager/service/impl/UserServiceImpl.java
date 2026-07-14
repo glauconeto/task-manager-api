@@ -7,6 +7,7 @@ import io.github.glauconeto.taskmanager.mapper.UserMapper;
 import io.github.glauconeto.taskmanager.repository.UserRepository;
 import io.github.glauconeto.taskmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse create(UserRequest request) {
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Email already exists");
         }
         User user = userMapper.toEntity(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         User saved = userRepository.save(user);
         return userMapper.toResponse(saved);
     }
@@ -55,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         User updated = userRepository.save(user);
         return userMapper.toResponse(updated);
