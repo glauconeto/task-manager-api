@@ -36,6 +36,10 @@ dependencies {
 	testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 }
 
+tasks.jar {
+	enabled = false
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
 }

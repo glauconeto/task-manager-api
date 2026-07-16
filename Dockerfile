@@ -24,7 +24,7 @@ WORKDIR /app
 RUN addgroup -g 1000 appuser && adduser -D -u 1000 -G appuser appuser
 
 # Copy the built jar from builder stage
-COPY --from=builder /app/build/libs/*.jar app.jar
+COPY --from=builder /app/build/libs/*.jar /app/app.jar
 
 # Change ownership to non-root user
 RUN chown appuser:appuser /app/app.jar
@@ -36,7 +36,7 @@ EXPOSE 80
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-    CMD java -cp /app/app.jar org.springframework.boot.loader.JarLauncher || exit 1
+    CMD wget --spider -q http://localhost:80/users || exit 1
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
