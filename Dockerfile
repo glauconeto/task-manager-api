@@ -31,8 +31,8 @@ RUN chown appuser:appuser /app/app.jar
 
 USER appuser
 
-# Expose the port Spring Boot uses by default
-EXPOSE 8080
+# Expose the port Spring Boot listens on
+EXPOSE 80
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \

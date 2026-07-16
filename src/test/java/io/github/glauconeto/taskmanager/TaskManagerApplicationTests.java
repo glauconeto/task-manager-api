@@ -1,10 +1,10 @@
-package io.github.glauconeto.api_rest;
+package io.github.glauconeto.taskmanager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApiRestApplicationTests {
+class TaskManagerApplicationTests {
 
 	@Test
 	void contextLoads() {
