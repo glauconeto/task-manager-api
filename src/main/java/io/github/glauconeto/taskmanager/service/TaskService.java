@@ -12,7 +12,7 @@ public interface TaskService {
 
     TaskResponse create(TaskRequest request, String userEmail);
 
-    TaskResponse findById(UUID id);
+    TaskResponse findById(UUID id, String userEmail);
 
     List<TaskResponse> findAll(String userEmail);
 
@@ -22,6 +22,6 @@ public interface TaskService {
 
     TaskResponse update(UUID id, TaskRequest request, String userEmail);
 
-    void delete(UUID id);
+    void delete(UUID id, String userEmail);
 
 }

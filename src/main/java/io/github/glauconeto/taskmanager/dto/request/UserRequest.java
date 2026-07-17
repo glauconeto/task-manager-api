@@ -1,5 +1,6 @@
 package io.github.glauconeto.taskmanager.dto.request;
 
+import io.github.glauconeto.taskmanager.validation.StrongPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class UserRequest {
     private String email;
 
     @NotBlank(message = "Password is required")
+    @StrongPassword
     private String password;
 
 }

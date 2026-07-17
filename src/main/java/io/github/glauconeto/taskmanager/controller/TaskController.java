@@ -38,7 +38,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponse> findById(@PathVariable UUID id) {
-        return ResponseEntity.ok(taskService.findById(id));
+        return ResponseEntity.ok(taskService.findById(id, currentUserEmail()));
     }
 
     @GetMapping
@@ -66,7 +66,7 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        taskService.delete(id);
+        taskService.delete(id, currentUserEmail());
         return ResponseEntity.noContent().build();
     }
 
