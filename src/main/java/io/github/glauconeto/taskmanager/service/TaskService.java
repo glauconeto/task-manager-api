@@ -10,19 +10,17 @@ import java.util.UUID;
 
 public interface TaskService {
 
-    TaskResponse create(TaskRequest request);
+    TaskResponse create(TaskRequest request, String userEmail);
 
     TaskResponse findById(UUID id);
 
-    List<TaskResponse> findAll();
+    List<TaskResponse> findAll(String userEmail);
 
-    List<TaskResponse> findByUserId(UUID userId);
+    List<TaskResponse> findByStatus(String userEmail, TaskStatus status);
 
-    List<TaskResponse> findByUserIdAndStatus(UUID userId, TaskStatus status);
+    List<TaskResponse> findByPriority(String userEmail, TaskPriority priority);
 
-    List<TaskResponse> findByUserIdAndPriority(UUID userId, TaskPriority priority);
-
-    TaskResponse update(UUID id, TaskRequest request);
+    TaskResponse update(UUID id, TaskRequest request, String userEmail);
 
     void delete(UUID id);
 
