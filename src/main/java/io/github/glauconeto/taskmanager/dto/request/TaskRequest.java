@@ -2,6 +2,7 @@ package io.github.glauconeto.taskmanager.dto.request;
 
 import io.github.glauconeto.taskmanager.entity.TaskPriority;
 import io.github.glauconeto.taskmanager.entity.TaskStatus;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class TaskRequest {
 
     private TaskPriority priority = TaskPriority.MEDIUM;
 
+    @FutureOrPresent(message = "Due date cannot be in the past")
     private LocalDate dueDate;
 
 }

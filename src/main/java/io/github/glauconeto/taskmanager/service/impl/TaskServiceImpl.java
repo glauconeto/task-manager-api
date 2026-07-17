@@ -37,9 +37,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskResponse findById(UUID id) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+    public TaskResponse findById(UUID id, String userEmail) {
+        Task task = findOwnedTask(id, userEmail);
         return taskMapper.toResponse(task);
     }
 
@@ -69,33 +68,38 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponse update(UUID id, TaskRequest request, String userEmail) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-
-        User user = findUserByEmail(userEmail);
+        Task task = findOwnedTask(id, userEmail);
 
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         task.setStatus(request.getStatus());
         task.setPriority(request.getPriority());
         task.setDueDate(request.getDueDate());
-        task.setUser(user);
 
         Task updated = taskRepository.save(task);
         return taskMapper.toResponse(updated);
     }
 
     @Override
-    public void delete(UUID id) {
-        if (!taskRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Task not found");
-        }
+    public void delete(UUID id, String userEmail) {
+        findOwnedTask(id, userEmail);
         taskRepository.deleteById(id);
     }
 
     private User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    private Task findOwnedTask(UUID id, String userEmail) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        if (!task.getUser().getEmail().equals(userEmail)) {
+            throw new ResourceNotFoundException("Task not found");
+        }
+
+        return task;
     }
 
 }
