@@ -3,6 +3,7 @@ package io.github.glauconeto.taskmanager.exception;
 import io.github.glauconeto.taskmanager.dto.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,6 +39,19 @@ public class GlobalExceptionHandler {
         error.setTimestamp(LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex,
+                                                               jakarta.servlet.http.HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse();
+        error.setStatus(HttpStatus.UNAUTHORIZED.value());
+        error.setError("Unauthorized");
+        error.setMessage("Invalid email or password");
+        error.setPath(request.getRequestURI());
+        error.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
