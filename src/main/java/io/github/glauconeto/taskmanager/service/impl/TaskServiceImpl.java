@@ -26,9 +26,8 @@ public class TaskServiceImpl implements TaskService {
     private final TaskMapper taskMapper;
 
     @Override
-    public TaskResponse create(TaskRequest request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public TaskResponse create(TaskRequest request, String userEmail) {
+        User user = findUserByEmail(userEmail);
 
         Task task = taskMapper.toEntity(request);
         task.setUser(user);
@@ -45,40 +44,35 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponse> findAll() {
-        return taskRepository.findAll().stream()
+    public List<TaskResponse> findAll(String userEmail) {
+        User user = findUserByEmail(userEmail);
+        return taskRepository.findByUserId(user.getId()).stream()
                 .map(taskMapper::toResponse)
                 .toList();
     }
 
     @Override
-    public List<TaskResponse> findByUserId(UUID userId) {
-        return taskRepository.findByUserId(userId).stream()
+    public List<TaskResponse> findByStatus(String userEmail, TaskStatus status) {
+        User user = findUserByEmail(userEmail);
+        return taskRepository.findByUserIdAndStatus(user.getId(), status).stream()
                 .map(taskMapper::toResponse)
                 .toList();
     }
 
     @Override
-    public List<TaskResponse> findByUserIdAndStatus(UUID userId, TaskStatus status) {
-        return taskRepository.findByUserIdAndStatus(userId, status).stream()
+    public List<TaskResponse> findByPriority(String userEmail, TaskPriority priority) {
+        User user = findUserByEmail(userEmail);
+        return taskRepository.findByUserIdAndPriority(user.getId(), priority).stream()
                 .map(taskMapper::toResponse)
                 .toList();
     }
 
     @Override
-    public List<TaskResponse> findByUserIdAndPriority(UUID userId, TaskPriority priority) {
-        return taskRepository.findByUserIdAndPriority(userId, priority).stream()
-                .map(taskMapper::toResponse)
-                .toList();
-    }
-
-    @Override
-    public TaskResponse update(UUID id, TaskRequest request) {
+    public TaskResponse update(UUID id, TaskRequest request, String userEmail) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = findUserByEmail(userEmail);
 
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
@@ -97,6 +91,11 @@ public class TaskServiceImpl implements TaskService {
             throw new ResourceNotFoundException("Task not found");
         }
         taskRepository.deleteById(id);
+    }
+
+    private User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
 }

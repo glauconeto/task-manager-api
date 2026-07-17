@@ -9,8 +9,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface TaskMapper {
 
-    @Mapping(source = "userId", target = "user.id")
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     Task toEntity(TaskRequest request);

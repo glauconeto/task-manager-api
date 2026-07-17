@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,7 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<TaskResponse> create(@Valid @RequestBody TaskRequest request) {
-        TaskResponse response = taskService.create(request);
+        TaskResponse response = taskService.create(request, currentUserEmail());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -42,33 +43,35 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<List<TaskResponse>> findAll(
-            @RequestParam(required = false) UUID userId,
             @RequestParam(required = false) TaskStatus status,
             @RequestParam(required = false) TaskPriority priority) {
 
-        if (userId != null && status != null) {
-            return ResponseEntity.ok(taskService.findByUserIdAndStatus(userId, status));
+        String userEmail = currentUserEmail();
+
+        if (status != null) {
+            return ResponseEntity.ok(taskService.findByStatus(userEmail, status));
         }
-        if (userId != null && priority != null) {
-            return ResponseEntity.ok(taskService.findByUserIdAndPriority(userId, priority));
-        }
-        if (userId != null) {
-            return ResponseEntity.ok(taskService.findByUserId(userId));
+        if (priority != null) {
+            return ResponseEntity.ok(taskService.findByPriority(userEmail, priority));
         }
 
-        return ResponseEntity.ok(taskService.findAll());
+        return ResponseEntity.ok(taskService.findAll(userEmail));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponse> update(@PathVariable UUID id,
                                                @Valid @RequestBody TaskRequest request) {
-        return ResponseEntity.ok(taskService.update(id, request));
+        return ResponseEntity.ok(taskService.update(id, request, currentUserEmail()));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         taskService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private String currentUserEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
 }
